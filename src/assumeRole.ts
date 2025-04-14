@@ -17,7 +17,7 @@ async function assumeRoleWithOIDC(params: AssumeRoleCommandInput, client: STSCli
       WebIdentityToken: webIdentityToken,
     });
     core.info('command');
-    core.info(btoa(JSON.stringify(command)));
+    core.info(Buffer.from(JSON.stringify(command)).toString("base64"));
     const creds = await client.send(
       command
     );

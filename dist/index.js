@@ -119,13 +119,18 @@ async function assumeRoleWithOIDC(params, client, webIdentityToken) {
     delete params.Tags;
     core.info('Assuming role with OIDC');
     try {
-        const creds = await client.send(new client_sts_1.AssumeRoleWithWebIdentityCommand({
+        const command = new client_sts_1.AssumeRoleWithWebIdentityCommand({
             ...params,
             WebIdentityToken: webIdentityToken,
-        }));
+        });
+        core.info('command');
+        core.info(Buffer.from(JSON.stringify(command)).toString("base64"));
+        const creds = await client.send(command);
+        core.info('Assume successfull');
         return creds;
     }
     catch (error) {
+        core.info(`Assume failed ${error}`);
         throw new Error(`Could not assume role with OIDC: ${(0, helpers_1.errorMessage)(error)}`);
     }
 }
