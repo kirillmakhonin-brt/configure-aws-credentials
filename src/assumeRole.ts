@@ -11,14 +11,19 @@ async function assumeRoleWithOIDC(params: AssumeRoleCommandInput, client: STSCli
   delete params.Tags;
   core.info('Assuming role with OIDC');
   try {
+    const command = new AssumeRoleWithWebIdentityCommand({
+      ...params,
+      WebIdentityToken: webIdentityToken,
+    });
+    core.info('command');
+    core.info(btoa(JSON.stringify(command)));
     const creds = await client.send(
-      new AssumeRoleWithWebIdentityCommand({
-        ...params,
-        WebIdentityToken: webIdentityToken,
-      }),
+      command
     );
+    core.info('Assume successfull');
     return creds;
   } catch (error) {
+    core.info(`Assume failed ${error}`);
     throw new Error(`Could not assume role with OIDC: ${errorMessage(error)}`);
   }
 }
