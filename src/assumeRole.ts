@@ -7,6 +7,7 @@ import { AssumeRoleCommand, AssumeRoleWithWebIdentityCommand } from '@aws-sdk/cl
 import type { CredentialsClient } from './CredentialsClient';
 import { errorMessage, isDefined, sanitizeGitHubVariables } from './helpers';
 
+
 async function assumeRoleWithOIDC(params: AssumeRoleCommandInput, client: STSClient, webIdentityToken: string) {
   delete params.Tags;
   core.info('Assuming role with OIDC');
